@@ -87,5 +87,27 @@ Massive thanks to the open-source community:
 - [**spotDL**](https://github.com/spotDL/spotify-downloader): The Spotify engine.
 - [**scdl**](https://github.com/flyingrub/scdl): The SoundCloud engine.
 
-## License
+## 📄 License
 This project is open-source. Feel free to fork, modify, and distribute it!
+
+---
+
+## 📦 Creating Standalone Builds (Portable)
+
+If you want to bundle **anydl** into a single executable for distribution (so users don't need Python installed):
+
+1. **Install PyInstaller:**
+   ```bash
+   pip install pyinstaller
+   ```
+
+2. **Prepare Binaries (Option A):**
+   Create a `bin/` folder in the project root and place the static binaries for your OS (ffmpeg, yt-dlp, spotdl, scdl) inside it.
+
+3. **Build the Executable:**
+   ```bash
+   pyinstaller --noconsole --onefile --add-data "bin:bin" --name anydl main.py
+   ```
+   - **Windows:** Generates `dist/anydl.exe`
+   - **Linux/macOS:** Generates `dist/anydl`
+
