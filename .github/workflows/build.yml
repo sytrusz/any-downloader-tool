@@ -24,19 +24,19 @@ jobs:
             artifact_name: anydl.exe
             bundle_name: anydl-windows
             sep: ";"
-            zip_cmd: "powershell Compress-Archive -Path dist/anydl/* -DestinationPath anydl-windows.zip"
+            zip_cmd: "7z a anydl-windows.zip ./dist/anydl/*"
             zip_file: "anydl-windows.zip"
-          - os: ubuntu-20.04
+          - os: ubuntu-latest
             artifact_name: anydl
             bundle_name: anydl-linux
             sep: ":"
-            zip_cmd: "zip -r anydl-linux.zip dist/anydl/*"
+            zip_cmd: "cd dist/anydl && zip -r ../../anydl-linux.zip ."
             zip_file: "anydl-linux.zip"
           - os: macos-latest
             artifact_name: anydl
             bundle_name: anydl-macos
             sep: ":"
-            zip_cmd: "zip -r anydl-macos.zip dist/anydl/*"
+            zip_cmd: "cd dist/anydl && zip -r ../../anydl-macos.zip ."
             zip_file: "anydl-macos.zip"
 
     steps:
@@ -54,7 +54,7 @@ jobs:
           pip install pyinstaller
 
       - name: Setup Binaries (Linux)
-        if: matrix.os == 'ubuntu-20.04'
+        if: matrix.os == 'ubuntu-latest'
         run: |
           mkdir -p bin
           curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o bin/yt-dlp
@@ -88,13 +88,12 @@ jobs:
       - name: Build with PyInstaller
         shell: bash
         run: |
-          # Use --onedir instead of --onefile
           pyinstaller --noconsole --onedir --add-data "bin${{ matrix.sep }}bin" --name anydl main.py
 
       - name: Compress into ZIP
         shell: bash
         run: |
-          ${{ matrix.zip_cmd }}
+          ${{ matrix.matrix.zip_cmd || matrix.zip_cmd }}
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
