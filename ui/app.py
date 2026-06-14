@@ -8,7 +8,7 @@ import re
 from pathlib import Path
 
 async def main_app(page: ft.Page):
-    page.title = "Any-Downloader-Tool"
+    page.title = "anydl"
     page.theme_mode = ft.ThemeMode.LIGHT
     page.padding = 0
     page.bgcolor = ft.Colors.GREY_50
@@ -16,7 +16,7 @@ async def main_app(page: ft.Page):
     manager = DownloadManager()
 
     # Determine default download path
-    default_download_path = os.path.join(os.path.expanduser("~"), "Documents", "AnyDownloader")
+    default_download_path = os.path.join(os.path.expanduser("~"), "Documents", "anydl")
 
     # Setup FilePicker
     get_directory_dialog = ft.FilePicker()
@@ -365,7 +365,7 @@ async def main_app(page: ft.Page):
         content=ft.Row([
             ft.Text(spans=[
                 ft.TextSpan("ANY", style=ft.TextStyle(color="#21c25e", weight=ft.FontWeight.BOLD, size=22)),
-                ft.TextSpan("DOWN", style=ft.TextStyle(color=ft.Colors.BLACK, weight=ft.FontWeight.BOLD, size=22)),
+                ft.TextSpan("DL", style=ft.TextStyle(color=ft.Colors.BLACK, weight=ft.FontWeight.BOLD, size=22)),
             ])
         ]),
         padding=ft.Padding.only(left=30, top=15, bottom=15),

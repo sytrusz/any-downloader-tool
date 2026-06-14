@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>Any Downloader Tool</h1>
+  <h1>anydl</h1>
   <p>A unified, clean, and modern desktop application for downloading audio and video.</p>
 
   <!-- TODO: Add a screenshot of the app here -->
@@ -8,7 +8,7 @@
 
 ## 📖 Overview
 
-**Any Downloader Tool** is an open-source Python desktop application built with [Flet](https://flet.dev). It serves as a user-friendly graphical interface (GUI) for two of the most powerful command-line downloaders available:
+**anydl** is an open-source Python desktop application built with [Flet](https://flet.dev). It serves as a user-friendly graphical interface (GUI) for two of the most powerful command-line downloaders available:
 - [**yt-dlp**](https://github.com/yt-dlp/yt-dlp): For downloading high-quality YouTube videos and converting them to audio.
 - [**spotDL**](https://github.com/spotDL/spotify-downloader): For downloading Spotify playlists and tracks directly to MP3.
 
@@ -37,8 +37,8 @@ Before using the app, you must have the following installed on your system:
 
 1. **Clone or Download the Repository:**
    ```bash
-   git clone https://github.com/yourusername/any-downloader-tool.git
-   cd any-downloader-tool
+   git clone https://github.com/yourusername/anydl.git
+   cd anydl
    ```
 
 2. **Set up a Python Virtual Environment:**
@@ -72,7 +72,7 @@ Before using the app, you must have the following installed on your system:
    python3 main.py
    ```
 2. **Select your tool:** Click either the Spotify Downloader or the YouTube Downloader on the home screen.
-3. **Choose a folder:** Click the folder icon at the bottom to choose where the downloaded files should be saved. (Defaults to `Documents/AnyDownloader`).
+3. **Choose a folder:** Click the folder icon at the bottom to choose where the downloaded files should be saved. (Defaults to `Documents/anydl`).
 4. **Select Format (YouTube Only):** If using the YouTube tool, choose between "Best Video (MP4)" or "Audio Only (MP3)" from the dropdown menu.
 5. **Download:** Paste your URL into the search bar and click the **Download** button. The progress bar and terminal logs will show you what is happening in real-time!
 
