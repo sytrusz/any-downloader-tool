@@ -8,21 +8,33 @@
 
 ## 📖 Overview
 
-**anydl** is an open-source Python desktop application built with [Flet](https://flet.dev). It serves as a user-friendly graphical interface (GUI) for two of the most powerful command-line downloaders available:
-- [**yt-dlp**](https://github.com/yt-dlp/yt-dlp): For downloading high-quality YouTube videos and converting them to audio.
-- [**spotDL**](https://github.com/spotDL/spotify-downloader): For downloading Spotify playlists and tracks directly to MP3.
+**anydl** is an open-source Python desktop application built with [Flet](https://flet.dev). It serves as a user-friendly graphical interface (GUI) that orchestrates several industry-standard command-line download engines.
+
+If you don't like using the terminal but want the raw power and speed of the best open-source tools, this app is for you!
 
 ---
 
-## Features
+## 🛠️ Powered By
 
-- 🎥 **YouTube Video & Audio**: Download the "Best Video" (automatically merged to MP4) or extract "Audio Only" (MP3).
-- 🎵 **Spotify Playlists**: Paste a Spotify playlist or track link, and the app will download all songs as MP3s with full metadata and album art.
+This project is built upon the incredible work of the following repositories:
+
+- [**yt-dlp**](https://github.com/yt-dlp/yt-dlp): The premier engine used for YouTube, TikTok, Facebook, X (Twitter), and Instagram downloads.
+- [**spotDL**](https://github.com/spotDL/spotify-downloader): The engine used for high-fidelity Spotify track and playlist downloads.
+- [**scdl**](https://github.com/flyingrub/scdl): The engine used for SoundCloud audio downloads.
+
+---
+
+## ✨ Features
+
+- 🎥 **Video Downloads**: Download the "Best Video" (automatically merged to MP4) from YouTube, TikTok, Facebook, Instagram, and X.
+- 🎵 **Music Downloads**: High-quality MP3 downloads from Spotify and SoundCloud with full metadata.
+- 📊 **Real-Time Progress**: Watch your downloads complete with a live percentage progress bar.
 - 📂 **Custom Save Locations**: Easily choose where your files go using your operating system's native folder picker.
+- 🎨 **Modern UI**: A clean, distraction-free interface inspired by modern search engines.
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
@@ -37,12 +49,11 @@ Before using the app, you must have the following installed on your system:
 
 1. **Clone or Download the Repository:**
    ```bash
-   git clone https://github.com/yourusername/anydl.git
+   git clone https://github.com/sytrusz/anydl.git
    cd anydl
    ```
 
 2. **Set up a Python Virtual Environment:**
-   This keeps the app's dependencies isolated from your system.
    ```bash
    python3 -m venv .venv
    ```
@@ -57,39 +68,28 @@ Before using the app, you must have the following installed on your system:
    ```
 
 5. **(Linux Only) Install Desktop Shortcut:**
-   If you want the app to appear in your system's application launcher, run the provided script:
    ```bash
    ./install_desktop.sh
    ```
 
 ---
 
-## How to Use
+## 💻 How to Use
 
-1. **Launch the App:**
-   Make sure your virtual environment is activated, then run:
-   ```bash
-   python3 main.py
-   ```
-2. **Select your tool:** Click either the Spotify Downloader or the YouTube Downloader on the home screen.
-3. **Choose a folder:** Click the folder icon at the bottom to choose where the downloaded files should be saved. (Defaults to `Documents/anydl`).
-4. **Select Format (YouTube Only):** If using the YouTube tool, choose between "Best Video (MP4)" or "Audio Only (MP3)" from the dropdown menu.
-5. **Download:** Paste your URL into the search bar and click the **Download** button. The progress bar and terminal logs will show you what is happening in real-time!
+1. **Launch the App:** `python3 main.py`
+2. **Select your tool:** Click one of the cards (Spotify, YouTube, TikTok, etc.) on the home screen.
+3. **Choose a folder:** Click the folder icon at the bottom to set your download directory.
+4. **Download:** Paste your URL and click **Download**.
 
 ---
 
-## Troubleshooting
+## ❤️ Credits & Acknowledgements
 
-- **"Failed to merge formats" or "Audio conversion failed"**
-  - **Fix:** You are missing `FFmpeg`. Please see the Prerequisites section and ensure FFmpeg is installed and added to your system's PATH.
-- **The UI is blank or crashing on Linux**
-  - **Fix:** Flet relies on a few system libraries. Make sure your system is up to date. You may need to install `zenity` (for the folder picker).
+Massive thanks to the open-source community:
+- [**Flet**](https://flet.dev/): The UI framework.
+- [**yt-dlp**](https://github.com/yt-dlp/yt-dlp): The video engine.
+- [**spotDL**](https://github.com/spotDL/spotify-downloader): The Spotify engine.
+- [**scdl**](https://github.com/flyingrub/scdl): The SoundCloud engine.
 
----
-
-## Credits & Acknowledgements
-
-This project would not be possible without the incredible work of the open-source community. Massive thanks to:
-- [**Flet**](https://flet.dev/): The UI framework that makes building Python desktop apps a breeze.
-- [**yt-dlp**](https://github.com/yt-dlp/yt-dlp): The premier, feature-rich command-line audio/video downloader.
-- [**spotDL**](https://github.com/spotDL/spotify-downloader): The fastest and most accurate Spotify downloader available.
+## 📄 License
+This project is open-source. Feel free to fork, modify, and distribute it!
