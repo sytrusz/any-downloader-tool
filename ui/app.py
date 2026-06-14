@@ -56,6 +56,20 @@ async def main_app(page: ft.Page):
             "hint": "Paste Facebook Video URL",
             "color": ft.Colors.BLUE_800,
             "icon": ft.Icons.FACEBOOK
+        },
+        "instagram": {
+            "name": "Instagram Reels",
+            "desc": "Instagram Reels & Videos - Free - High Quality",
+            "hint": "Paste Instagram URL",
+            "color": ft.Colors.PINK_500,
+            "icon": ft.Icons.CAMERA_ALT
+        },
+        "twitter": {
+            "name": "X (Twitter)",
+            "desc": "X Videos & GIFs - Free - All Devices",
+            "hint": "Paste X/Twitter URL",
+            "color": ft.Colors.BLACK,
+            "icon": ft.Icons.WEB
         }
     }
     
@@ -241,7 +255,7 @@ async def main_app(page: ft.Page):
 
         # Map UI tool IDs to actual CLI engines
         engine = current_tool_id
-        if current_tool_id in ["tiktok", "facebook"]:
+        if current_tool_id in ["tiktok", "facebook", "instagram", "twitter"]:
             engine = "yt-dlp"
 
         command = [engine]
@@ -292,7 +306,7 @@ async def main_app(page: ft.Page):
         download_btn_container.bgcolor = t["color"]
         
         # Tools using yt-dlp engine support format selection
-        if tool_id in ["yt-dlp", "tiktok", "facebook"]:
+        if tool_id in ["yt-dlp", "tiktok", "facebook", "instagram", "twitter"]:
             format_dropdown.visible = True
             format_dropdown.disabled = False
         else:
