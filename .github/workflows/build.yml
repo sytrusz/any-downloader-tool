@@ -1,0 +1,95 @@
+name: Build Portable anydl
+
+on:
+  push:
+    tags:
+      - 'v*' # Triggers on tags like v1.0.0
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  build:
+    name: Build for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            artifact_name: anydl.exe
+            bundle_name: anydl-windows.exe
+          - os: ubuntu-latest
+            artifact_name: anydl
+            bundle_name: anydl-linux
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Setup Binaries (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          mkdir -p bin
+          # Download yt-dlp
+          curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o bin/yt-dlp
+          # Download spotdl (using GitHub API to find latest)
+          SPOTDL_URL=$(curl -s https://api.github.com/repos/spotDL/spotify-downloader/releases/latest | grep "browser_download_url.*linux" | cut -d '"' -f 4)
+          curl -L "$SPOTDL_URL" -o bin/spotdl
+          # Download static ffmpeg
+          curl -L https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz -o ffmpeg.tar.xz
+          tar -xf ffmpeg.tar.xz
+          cp ffmpeg-*-amd64-static/ffmpeg bin/
+          # Copy scdl from pip installation
+          cp $(which scdl) bin/
+          chmod +x bin/*
+
+      - name: Setup Binaries (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path bin
+          # Download yt-dlp
+          Invoke-WebRequest -Uri "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe" -OutFile "bin/yt-dlp.exe"
+          # Download spotdl
+          $SPOTDL_RELEASE = Invoke-RestMethod -Uri "https://api.github.com/repos/spotDL/spotify-downloader/releases/latest"
+          $SPOTDL_URL = ($SPOTDL_RELEASE.assets | Where-Object { $_.name -like "*win.exe" }).browser_download_url
+          Invoke-WebRequest -Uri $SPOTDL_URL -OutFile "bin/spotdl.exe"
+          # Download ffmpeg essentials
+          Invoke-WebRequest -Uri "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip" -OutFile "ffmpeg.zip"
+          Expand-Archive -Path "ffmpeg.zip" -DestinationPath "ffmpeg_temp"
+          Get-ChildItem -Path "ffmpeg_temp" -Filter "ffmpeg.exe" -Recurse | Copy-Item -Destination "bin/ffmpeg.exe"
+          # Copy scdl (installed via pip)
+          Copy-Item (Get-Command scdl).Source "bin/scdl.exe"
+
+      - name: Build with PyInstaller
+        shell: bash
+        run: |
+          # Use ; as separator for Windows, : for Linux
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then
+            SEP=";"
+          else
+            SPOTDL_URL=$(curl -s https://api.github.com/repos/spotDL/spotify-downloader/releases/latest | grep "browser_download_url.*linux" | cut -d '"' -f 4)
+            SEP=":"
+          fi
+          pyinstaller --noconsole --onefile --add-data "bin${SEP}bin" --name anydl main.py
+
+      - name: Rename & Prepare Artifact
+        shell: bash
+        run: |
+          mv dist/${{ matrix.artifact_name }} dist/${{ matrix.bundle_name }}
+
+      - name: Create Release and Upload
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: dist/${{ matrix.bundle_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
