@@ -423,12 +423,15 @@ async def main_app(page: ft.Page):
     # -------------------------------------------------------------
     header = ft.Container(
         content=ft.Row([
-            ft.Row([
-                ft.Text(spans=[
-                    ft.TextSpan("ANY", style=ft.TextStyle(color="#21c25e", weight=ft.FontWeight.BOLD, size=22)),
-                    ft.TextSpan("DL", style=ft.TextStyle(color=ft.Colors.BLACK, weight=ft.FontWeight.BOLD, size=22)),
-                ])
-            ], on_click=lambda _: show_home()),
+            ft.Container(
+                content=ft.Row([
+                    ft.Text(spans=[
+                        ft.TextSpan("ANY", style=ft.TextStyle(color="#21c25e", weight=ft.FontWeight.BOLD, size=22)),
+                        ft.TextSpan("DL", style=ft.TextStyle(color=ft.Colors.BLACK, weight=ft.FontWeight.BOLD, size=22)),
+                    ])
+                ]),
+                on_click=lambda _: show_home()
+            ),
             theme_btn
         ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
         padding=ft.Padding.only(left=30, right=30, top=10, bottom=10),
