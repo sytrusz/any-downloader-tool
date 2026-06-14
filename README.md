@@ -2,8 +2,7 @@
   <h1>anydl</h1>
   <p>A unified, clean, and modern desktop application for downloading audio and video.</p>
 
-  <!-- TODO: Add a screenshot of the app here -->
-  <!-- <img src="screenshots/homepage.png" alt="App Homepage" width="600"> -->
+  <img src="screenshots/home.png" alt="App Homepage" width="600">
 </div>
 
 ## 📖 Overview

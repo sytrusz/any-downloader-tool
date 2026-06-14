@@ -488,7 +488,7 @@ async def main_app(page: ft.Page):
 
     footer = ft.Container(
         content=ft.Row([
-            ft.Text("Built with ❤️ by ", size=12, color=ft.Colors.GREY_600),
+            ft.Text("See repository at", size=12, color=ft.Colors.GREY_600),
             ft.TextButton(
                 "sytrusz/anydl",
                 url="https://github.com/sytrusz/anydl",
