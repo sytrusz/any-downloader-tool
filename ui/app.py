@@ -78,6 +78,7 @@ async def main_app(page: ft.Page):
     # -------------------------------------------------------------
     # Shared State & Elements
     # -------------------------------------------------------------
+    home_title = ft.Text("What would you like to download?", size=32, weight=ft.FontWeight.W_500, color=ft.Colors.BLACK)
     tool_title = ft.Text("", size=36, color=ft.Colors.BLACK, weight=ft.FontWeight.W_400)
     tool_desc = ft.Text("", size=16, color=ft.Colors.GREY_700)
     
@@ -304,6 +305,9 @@ async def main_app(page: ft.Page):
             theme_btn.icon = ft.Icons.LIGHT_MODE
             logo_dl_text.color = ft.Colors.WHITE
             
+            # Home View Colors
+            home_title.color = ft.Colors.WHITE
+
             # Tool View Colors
             tool_title.color = ft.Colors.WHITE
             tool_desc.color = ft.Colors.GREY_400
@@ -325,6 +329,9 @@ async def main_app(page: ft.Page):
             header.border = ft.Border.only(bottom=ft.BorderSide(1, ft.Colors.GREY_200))
             theme_btn.icon = ft.Icons.DARK_MODE
             logo_dl_text.color = ft.Colors.BLACK
+
+            # Home View Colors
+            home_title.color = ft.Colors.BLACK
 
             # Tool View Colors
             tool_title.color = ft.Colors.BLACK
@@ -441,7 +448,7 @@ async def main_app(page: ft.Page):
         expand=True,
         content=ft.Column([
             ft.Container(height=40),
-            ft.Text("What would you like to download?", size=32, weight=ft.FontWeight.W_500, color=ft.Colors.BLACK),
+            home_title,
             ft.Container(height=40),
             ft.GridView(
                 expand=True,
