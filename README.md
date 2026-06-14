@@ -5,13 +5,27 @@
   <img src="screenshots/home.png" alt="App Homepage" width="600">
 </div>
 
-## Overview
+## 📖 Overview
 
 **anydl** is an open-source Python desktop application built with [Flet](https://flet.dev). It serves as a user-friendly graphical interface (GUI) that orchestrates several industry-standard command-line download engines.
 
+If you don't like using the terminal but want the raw power and speed of the best open-source tools, this app is for you!
+
 ---
 
-## Powered By
+## 📥 Download Standalone (Portable)
+
+Don't want to install Python? Download the latest pre-built version for your operating system from the [**Releases**](https://github.com/sytrusz/anydl/releases) page:
+
+- 🪟 [**Download for Windows (.exe)**](https://github.com/sytrusz/anydl/releases/latest)
+- 🐧 [**Download for Linux (Binary)**](https://github.com/sytrusz/anydl/releases/latest)
+- 🍎 [**Download for macOS (Binary)**](https://github.com/sytrusz/anydl/releases/latest)
+
+> **Note for Linux/macOS:** After downloading, you may need to make the file executable by running `chmod +x anydl-linux` (or `anydl-macos`) in your terminal.
+
+---
+
+## 🛠️ Powered By
 
 This project is built upon the incredible work of the following repositories:
 
@@ -21,16 +35,17 @@ This project is built upon the incredible work of the following repositories:
 
 ---
 
-## Features
+## ✨ Features
 
 - 🎥 **Video Downloads**: Download the "Best Video" (automatically merged to MP4) from YouTube, TikTok, Facebook, Instagram, and X.
-- 🎵 **Music Downloads**: High-quality MP3 downloads from Spotify and SoundCloud.
+- 🎵 **Music Downloads**: High-quality MP3 downloads from Spotify and SoundCloud with full metadata.
 - 📊 **Real-Time Progress**: Watch your downloads complete with a live percentage progress bar.
 - 📂 **Custom Save Locations**: Easily choose where your files go using your operating system's native folder picker.
+- 🎨 **Modern UI**: A clean, distraction-free interface with Dark/Light mode support.
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
@@ -70,7 +85,7 @@ Before using the app, you must have the following installed on your system:
 
 ---
 
-## How to Use
+## 💻 How to Use
 
 1. **Launch the App:** `python3 main.py`
 2. **Select your tool:** Click one of the cards (Spotify, YouTube, TikTok, etc.) on the home screen.
@@ -79,7 +94,7 @@ Before using the app, you must have the following installed on your system:
 
 ---
 
-## Credits & Acknowledgements
+## ❤️ Credits & Acknowledgements
 
 Massive thanks to the open-source community:
 - [**Flet**](https://flet.dev/): The UI framework.
@@ -87,5 +102,5 @@ Massive thanks to the open-source community:
 - [**spotDL**](https://github.com/spotDL/spotify-downloader): The Spotify engine.
 - [**scdl**](https://github.com/flyingrub/scdl): The SoundCloud engine.
 
-## License
+## 📄 License
 This project is open-source. Feel free to fork, modify, and distribute it!
