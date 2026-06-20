@@ -142,7 +142,8 @@ async def main_app(page: ft.Page):
         visible=False
     )
 
-    options_row = ft.Row([dir_selector, format_dropdown], alignment=ft.MainAxisAlignment.CENTER, spacing=20)
+    playlist_checkbox = ft.Checkbox(label="Create separate folder for playlist", value=False)
+    options_row = ft.Row([dir_selector, format_dropdown, playlist_checkbox], alignment=ft.MainAxisAlignment.CENTER, spacing=20)
 
     log_area = ft.ListView(expand=True, spacing=5, auto_scroll=True)
     
@@ -220,6 +221,14 @@ async def main_app(page: ft.Page):
             download_btn_container.disabled = False
             url_input.disabled = False
             format_dropdown.disabled = False
+            playlist_checkbox.disabled = False
+
+            if "Process finished" in msg:
+                dlg = ft.AlertDialog(title=ft.Text("Success"), content=ft.Text("Download completed successfully!"))
+                page.open(dlg)
+            elif msg_type == "ERROR":
+                dlg = ft.AlertDialog(title=ft.Text("Error"), content=ft.Text("Download failed. Please check the logs for details."))
+                page.open(dlg)
 
         log_container.visible = True
         if not batch_update:
@@ -252,6 +261,7 @@ async def main_app(page: ft.Page):
         download_btn_container.disabled = True
         url_input.disabled = True
         format_dropdown.disabled = True
+        playlist_checkbox.disabled = True
         page.update()
 
         # Map UI tool IDs to actual CLI engines
@@ -265,6 +275,11 @@ async def main_app(page: ft.Page):
                 command.extend(["-x", "--audio-format", "mp3"])
             elif format_dropdown.value == "video":
                 command.extend(["--merge-output-format", "mp4"])
+            if playlist_checkbox.value:
+                command.extend(["-o", "%(playlist)s/%(title)s.%(ext)s"])
+        elif engine == "spotdl":
+            if playlist_checkbox.value:
+                command.extend(["--output", "{list}/{artists} - {title}.{ext}"])
         elif engine == "scdl":
             command.extend(["-l"]) # scdl requires -l for the URL
             
@@ -417,6 +432,7 @@ async def main_app(page: ft.Page):
                 log_container
             ],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            scroll=ft.ScrollMode.AUTO,
         )
     )
 
