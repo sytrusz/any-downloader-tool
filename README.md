@@ -11,20 +11,6 @@
 
 ---
 
-## Download Standalone (Portable)
-
-Don't want to install Python? Download the latest pre-built version for your operating system from the [**Releases**](https://github.com/sytrusz/anydl/releases) page:
-
-- 🪟 [**Download for Windows (.exe)**](https://github.com/sytrusz/anydl/releases/latest)
-- 🐧 [**Download for Linux (Binary)**](https://github.com/sytrusz/anydl/releases/latest)
-- 🍎 [**Download for macOS (Binary)**](https://github.com/sytrusz/anydl/releases/latest)
-
-> **Note for Linux/macOS:** After downloading, you must make the file executable by running `chmod +x anydl-linux` (or `anydl-macos`) in your terminal.
->
-> **Note for macOS:** If you see a "developer cannot be verified" warning, **Right-click** the file and select **Open**, or go to **System Settings > Privacy & Security** and click **Open Anyway**.
-
----
-
 ## Powered By
 
 This project is built upon the incredible work of the following repositories:
@@ -56,7 +42,7 @@ Before using the app, you must have the following installed on your system:
    - **macOS**: Install via Homebrew: `brew install ffmpeg`
    - **Linux**: Install via your package manager (e.g., `sudo apt install ffmpeg` or `sudo dnf install ffmpeg`)
 
-### Installation
+### Installation & Running
 
 1. **Clone or Download the Repository:**
    ```bash
@@ -64,33 +50,24 @@ Before using the app, you must have the following installed on your system:
    cd anydl
    ```
 
-2. **Set up a Python Virtual Environment:**
-   ```bash
-   python3 -m venv .venv
-   ```
+2. **Launch the Application:**
+   Instead of a traditional executable, **anydl** runs locally as a fast, responsive web application directly in your browser. Our startup scripts handle all the setup (creating the virtual environment and installing dependencies) automatically!
 
-3. **Activate the Virtual Environment:**
-   - **Linux/macOS:** `source .venv/bin/activate`
-   - **Windows:** `.venv\Scripts\activate`
+   - **Windows:** Double-click the `start_windows.bat` file.
+   - **Linux / macOS:** Run the `start_linux.sh` script in your terminal:
+     ```bash
+     ./start_linux.sh
+     ```
 
-4. **Install Dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-5. **(Linux Only) Install Desktop Shortcut:**
-   ```bash
-   ./install_desktop.sh
-   ```
+   *The script will automatically set everything up and launch the app in your default web browser.*
 
 ---
 
 ## How to Use
 
-1. **Launch the App:** `python3 main.py`
-2. **Select your tool:** Click one of the cards (Spotify, YouTube, TikTok, etc.) on the home screen.
-3. **Choose a folder:** Click the folder icon at the bottom to set your download directory.
-4. **Download:** Paste your URL and click **Download**.
+1. **Select your tool:** Click one of the cards (Spotify, YouTube, TikTok, etc.) on the home screen.
+2. **Choose a folder:** Click the folder icon at the bottom to set your download directory.
+3. **Download:** Paste your URL and click **Download**.
 
 ---
 
