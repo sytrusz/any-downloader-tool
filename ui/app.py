@@ -16,10 +16,9 @@ async def main_app(page: ft.Page):
     manager = DownloadManager()
 
     # Determine default download path
-    default_download_path = os.path.join(os.path.expanduser("~"), "Documents", "anydl")
+    default_download_path = os.path.join(os.path.expanduser("~"), "Downloads", "ANYDL")
 
-    # Setup FilePicker
-    get_directory_dialog = ft.FilePicker()
+    # Removed FilePicker for Web Compatibility
 
     TOOLS = {
         "spotdl": {
@@ -111,22 +110,7 @@ async def main_app(page: ft.Page):
         ink=True
     )
 
-    # Directory Selection UI
-    selected_dir_text = ft.Text(f"Save to: {default_download_path}", size=12, color=ft.Colors.GREY_600)
-    current_selected_dir = default_download_path
 
-    async def open_dir_picker(e):
-        nonlocal current_selected_dir
-        selected_path = await get_directory_dialog.get_directory_path()
-        if selected_path:
-            current_selected_dir = selected_path
-            selected_dir_text.value = f"Save to: {current_selected_dir}"
-            page.update()
-
-    dir_selector = ft.Row([
-        ft.IconButton(ft.Icons.FOLDER_OPEN, icon_color=ft.Colors.GREY_600, tooltip="Change download folder", on_click=open_dir_picker),
-        selected_dir_text
-    ], alignment=ft.MainAxisAlignment.CENTER)
 
     # Format Selector (yt-dlp only)
     format_dropdown = ft.Dropdown(
@@ -143,7 +127,7 @@ async def main_app(page: ft.Page):
     )
 
     playlist_checkbox = ft.Checkbox(label="Create separate folder for playlist", value=False)
-    options_row = ft.Row([dir_selector, format_dropdown, playlist_checkbox], alignment=ft.MainAxisAlignment.CENTER, spacing=20)
+    options_row = ft.Row([format_dropdown, playlist_checkbox], alignment=ft.MainAxisAlignment.CENTER, spacing=20)
 
     log_area = ft.ListView(expand=True, spacing=5, auto_scroll=True)
     
@@ -241,9 +225,7 @@ async def main_app(page: ft.Page):
             return
             
         # Ensure target directory exists
-        target_dir = current_selected_dir
-        if not target_dir:
-            target_dir = default_download_path
+        target_dir = default_download_path
             
         try:
             Path(target_dir).mkdir(parents=True, exist_ok=True)
@@ -326,7 +308,6 @@ async def main_app(page: ft.Page):
             # Tool View Colors
             tool_title.color = ft.Colors.WHITE
             tool_desc.color = ft.Colors.GREY_400
-            selected_dir_text.color = ft.Colors.GREY_400
             url_input.color = ft.Colors.BLACK # Keep input text readable in white box
             back_button.style = ft.ButtonStyle(color=ft.Colors.GREY_400)
             format_dropdown.color = ft.Colors.WHITE
@@ -351,7 +332,6 @@ async def main_app(page: ft.Page):
             # Tool View Colors
             tool_title.color = ft.Colors.BLACK
             tool_desc.color = ft.Colors.GREY_700
-            selected_dir_text.color = ft.Colors.GREY_600
             url_input.color = ft.Colors.BLACK
             back_button.style = ft.ButtonStyle(color=ft.Colors.GREY_700)
             format_dropdown.color = ft.Colors.BLACK
