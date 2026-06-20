@@ -5,7 +5,27 @@ import time
 import os
 import asyncio
 import re
+import json
 from pathlib import Path
+
+def get_spotdl_config_path():
+    return os.path.join(os.path.expanduser("~"), ".config", "spotdl", "config.json")
+
+def load_spotdl_config():
+    path = get_spotdl_config_path()
+    if os.path.exists(path):
+        try:
+            with open(path, "r") as f:
+                return json.load(f)
+        except:
+            pass
+    return {}
+
+def save_spotdl_config(data):
+    path = get_spotdl_config_path()
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w") as f:
+        json.dump(data, f, indent=4)
 
 async def main_app(page: ft.Page):
     page.title = "anydl"
@@ -14,6 +34,58 @@ async def main_app(page: ft.Page):
     page.bgcolor = ft.Colors.GREY_50
 
     manager = DownloadManager()
+
+    # Load spotdl config
+    spotdl_config = load_spotdl_config()
+    current_client_id = spotdl_config.get("client_id", "")
+    current_client_secret = spotdl_config.get("client_secret", "")
+    if current_client_id == "5f573c9620494bae87890c0f08a60293":
+        current_client_id = ""
+        current_client_secret = ""
+
+    client_id_field = ft.TextField(label="Spotify Client ID", value=current_client_id, password=True, can_reveal_password=True)
+    client_secret_field = ft.TextField(label="Spotify Client Secret", value=current_client_secret, password=True, can_reveal_password=True)
+
+    def save_settings_click(e):
+        spotdl_config["client_id"] = client_id_field.value.strip() or "5f573c9620494bae87890c0f08a60293"
+        spotdl_config["client_secret"] = client_secret_field.value.strip() or "212476d9b0f3472eaa762d90b19b0ba8"
+        save_spotdl_config(spotdl_config)
+        
+        if current_tool_id == "spotdl":
+            if spotdl_config.get("client_id", "") != "5f573c9620494bae87890c0f08a60293":
+                spotify_api_info_text.value = "Currently using: Custom API"
+            else:
+                spotify_api_info_text.value = "Currently using: Default Built-in API (May face rate limits)"
+        
+        settings_dlg.open = False
+        page.update()
+
+    settings_dlg = ft.AlertDialog(
+        title=ft.Text("Settings"),
+        content=ft.Column([
+            ft.Text("Custom Spotify API Keys (Optional - Bypasses Rate Limits)", weight=ft.FontWeight.BOLD),
+            ft.TextButton("Open Spotify Developer Dashboard", icon=ft.Icons.OPEN_IN_NEW, url="https://developer.spotify.com/dashboard", style=ft.ButtonStyle(color=ft.Colors.BLUE)),
+            ft.Text("Leave blank to use the default built-in API.", size=12, color=ft.Colors.GREY_600),
+            client_id_field,
+            client_secret_field
+        ], tight=True),
+        actions=[
+            ft.TextButton("Cancel", on_click=lambda e: setattr(settings_dlg, 'open', False) or page.update()),
+            ft.TextButton("Save", on_click=save_settings_click)
+        ]
+    )
+
+    def open_settings(e):
+        if settings_dlg not in page.overlay:
+            page.overlay.append(settings_dlg)
+        settings_dlg.open = True
+        page.update()
+
+    settings_btn = ft.IconButton(
+        icon=ft.Icons.SETTINGS,
+        tooltip="Settings",
+        on_click=open_settings
+    )
 
     # Determine default download path
     default_download_path = os.path.join(os.path.expanduser("~"), "Downloads", "ANYDL")
@@ -128,6 +200,8 @@ async def main_app(page: ft.Page):
 
     playlist_checkbox = ft.Checkbox(label="Create separate folder for playlist", value=False)
     options_row = ft.Row([format_dropdown, playlist_checkbox], alignment=ft.MainAxisAlignment.CENTER, spacing=20)
+    
+    spotify_api_info_text = ft.Text("", size=12, color=ft.Colors.GREY_600, visible=False, italic=True)
 
     log_area = ft.ListView(expand=True, spacing=5, auto_scroll=True)
     
@@ -208,11 +282,28 @@ async def main_app(page: ft.Page):
             playlist_checkbox.disabled = False
 
             if "Process finished" in msg:
-                dlg = ft.AlertDialog(title=ft.Text("Success"), content=ft.Text("Download completed successfully!"))
-                page.open(dlg)
+                if playlist_state["total"] > 0:
+                    success_count = playlist_state["downloaded"]
+                    failed_count = playlist_state["total"] - success_count
+                    msg_text = f"Download completed!\n\nTotal: {playlist_state['total']}\nSuccess: {success_count}\nFailed/Missing: {failed_count}"
+                else:
+                    msg_text = "Download completed successfully!"
+                    
+                dlg = ft.AlertDialog(title=ft.Text("Success"), content=ft.Text(msg_text))
+                def close_success(e, d=dlg):
+                    d.open = False
+                    page.update()
+                dlg.actions = [ft.TextButton("OK", on_click=close_success)]
+                page.overlay.append(dlg)
+                dlg.open = True
             elif msg_type == "ERROR":
                 dlg = ft.AlertDialog(title=ft.Text("Error"), content=ft.Text("Download failed. Please check the logs for details."))
-                page.open(dlg)
+                def close_error(e, d=dlg):
+                    d.open = False
+                    page.update()
+                dlg.actions = [ft.TextButton("OK", on_click=close_error)]
+                page.overlay.append(dlg)
+                dlg.open = True
 
         log_container.visible = True
         if not batch_update:
@@ -258,10 +349,10 @@ async def main_app(page: ft.Page):
             elif format_dropdown.value == "video":
                 command.extend(["--merge-output-format", "mp4"])
             if playlist_checkbox.value:
-                command.extend(["-o", "%(playlist)s/%(title)s.%(ext)s"])
+                command.extend(["-o", "anydl@sytrus - %(playlist)s/%(title)s.%(ext)s"])
         elif engine == "spotdl":
             if playlist_checkbox.value:
-                command.extend(["--output", "{list}/{artists} - {title}.{ext}"])
+                command.extend(["--output", "anydl@sytrus - {list-name}/{artists} - {title}.{output-ext}"])
         elif engine == "scdl":
             command.extend(["-l"]) # scdl requires -l for the URL
             
@@ -366,6 +457,16 @@ async def main_app(page: ft.Page):
             format_dropdown.disabled = False
         else:
             format_dropdown.visible = False
+            
+        if tool_id == "spotdl":
+            current_conf = load_spotdl_config()
+            if current_conf.get("client_id", "") and current_conf.get("client_id", "") != "5f573c9620494bae87890c0f08a60293":
+                spotify_api_info_text.value = "Currently using: Custom API"
+            else:
+                spotify_api_info_text.value = "Currently using: Default Built-in API (May face rate limits)"
+            spotify_api_info_text.visible = True
+        else:
+            spotify_api_info_text.visible = False
 
         log_area.controls.clear()
         log_container.visible = False
@@ -409,6 +510,7 @@ async def main_app(page: ft.Page):
                 progress_container,
                 ft.Container(height=10),
                 options_row,
+                spotify_api_info_text,
                 log_container
             ],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -475,7 +577,7 @@ async def main_app(page: ft.Page):
                 ]),
                 on_click=lambda _: show_home()
             ),
-            theme_btn
+            ft.Row([settings_btn, theme_btn])
         ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
         padding=ft.Padding.only(left=30, right=30, top=10, bottom=10),
         bgcolor=ft.Colors.WHITE,

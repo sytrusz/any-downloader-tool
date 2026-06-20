@@ -20,5 +20,5 @@ echo "Installing dependencies..."
 pip install -r requirements.txt
 
 # Run the app
-echo "Launching Desktop App..."
+echo "Launching Web App..."
 python3 main.py

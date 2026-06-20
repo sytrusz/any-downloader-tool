@@ -48,7 +48,9 @@ Before using the app, you **must** have the following installed on your system:
 
 - 🎥 **Video Downloads**: Download the "Best Video" (automatically merged to MP4) from YouTube, TikTok, Facebook, Instagram, and X.
 - 🎵 **Music Downloads**: High-quality MP3 downloads from Spotify and SoundCloud with full metadata.
-- 📊 **Real-Time Progress**: Watch your downloads complete with a live percentage progress bar.
+- 🚀 **Spotify Rate-Limit Bypassing**: Add your own Spotify Developer API keys via the Settings menu to bypass annoying rate limits on user-created playlists.
+- 📁 **Smart Playlist Folders**: Playlists are automatically organized into neatly named subfolders (`anydl@sytrus - [Playlist Name]`).
+- 📊 **Progress & Stats**: Watch your downloads complete with a live progress bar, and get detailed summaries of successful/missing songs upon completion.
 - 📂 **Custom Save Locations**: Easily choose where your files go using your operating system's native folder picker.
 - 🎨 **Modern UI**: A clean, distraction-free interface with Dark/Light mode support.
 
